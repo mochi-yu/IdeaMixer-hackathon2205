@@ -5,8 +5,7 @@ import os
 
 
 app = Flask(__name__, static_folder='../dist/static', template_folder='../dist')
-db_uri = os.environ.get('DATABASE_URL')
-app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myspa.db'
 app.register_blueprint(api_bp)
 
 @app.route('/', defaults={'path': ''})
@@ -20,4 +19,4 @@ if __name__ == '__main__':
     if not get_all():
       insert('foo', 'This is foo.')
       insert('bar', 'This is bar.')
-  app.run()
+  app.run(host='0.0.0.0',port=5000,debug=True)
