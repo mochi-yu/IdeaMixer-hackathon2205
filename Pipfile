@@ -11,10 +11,8 @@ sqlalchemy = "*"
 flask-sqlalchemy = "*"
 psycopg2 = "*"
 
+
 [dev-packages]
 
 [requires]
 python_version = "3.9"
-
-[scripts]
-start = "python backend/main.py"
