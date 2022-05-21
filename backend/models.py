@@ -1,18 +1,25 @@
-#coding: utf-8
+from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
 
-from sqlalchemy import Column,Integer,String,DateTime
-from assets.database import Base
-from datetime import datetime as dt
+db = SQLAlchemy()
 
-#データベースのテーブル情報
-class groupList(Base):
-    __tablename__ = "groupList"
-    gropuName = Column(String(255))
-    gropuId = Column(Integer,primary_key=True)
-    createDate = Column(DateTime)
-    postcount = Column(Integer)
+class SpamModel(db.Model):
+    __tablename__ = 'spam_table'
 
-    def __init__(self,name=None,article=None,timestamp=None):
-        self.name = name
-        self.article = article
-        self.timestamp = timestamp
+    pk = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text)
+    note = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
+
+def init_db(app):
+    db.init_app(app)
+    db.create_all()
+
+def get_all():
+    return SpamModel.query.order_by(SpamModel.pk).all()
+
+def insert(name, note):
+    model = SpamModel(name=name, note=note)
+    db.session.add(model)
+    db.session.commit()
