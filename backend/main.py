@@ -5,7 +5,7 @@ import os
 
 
 app = Flask(__name__, static_folder='../dist/static', template_folder='../dist')
-db_uri = os.environ.get('DATABASE_URL') or "postgresql://localhost/flasknote"
+db_uri = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.register_blueprint(api_bp)
 
