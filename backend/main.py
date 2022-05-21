@@ -9,5 +9,9 @@ app = Flask(__name__, static_folder='../dist/static', template_folder='../dist')
 def index(path):
   return render_template('index.html')
 
+from api import api
+app.register_blueprint(api, url_prefix="/api")
+
+
 if __name__ == '__main__':
   app.run()
