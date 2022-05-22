@@ -5,7 +5,9 @@ import os
 
 
 app = Flask(__name__, static_folder='../dist/static', template_folder='../dist')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///myspa.db'
+baseUrl = os.environ.get('DATABASE_URL')
+baseUrl = baseUrl[:8] + 'ql' + baseUrl[8:]
+app.config['SQLALCHEMY_DATABASE_URI'] = baseUrl or 'sqlite:///myspa.db'
 app.register_blueprint(api_bp)
 
 @app.route('/', defaults={'path': ''})
