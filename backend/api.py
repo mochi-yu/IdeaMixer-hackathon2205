@@ -6,13 +6,6 @@ from models import *
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
-# テストデータ
-users = [
-  { "id": "U001", "name": "ユーザ太郎", "age": 27 },
-  { "id": "U002", "name": "ユーザ二郎", "age": 20 },
-  { "id": "U003", "name": "ユーザ三郎", "age": 10 }
-]
-
 
 class Spam(Resource):
   def get(self):
@@ -29,7 +22,8 @@ class Rand(Resource):
 
 class PostData(Resource):
   def get(self):
-    return [{'user': data.userId, 'group': data.groupId, 'content': data.contents, 'postedAt': str(data.postedAt)} for data in getAllPost()]
+    groupId = request.args.get('id')
+    return [{'user': data.userId, 'group': data.groupId, 'content': data.contents, 'postedAt': str(data.postedAt)} for data in getAllPost(groupId)]
 
   def post(self):
     addPost(request.json)
@@ -38,6 +32,14 @@ class PostData(Resource):
 class Mix(Resource):
   def get(self):
     return [{'text': data.contents} for data in getMixData()]
+
+class Group(Resource):
+  def get(self):
+    return [{'name': data.groupName, 'id': data.groupId, 'createdAt': data.createdAt, 'postCount': data.postCount} for data in getAllGroup()]
+
+  def post(self):
+    addGroup(request.json)
+    return '', 204
 
 api = Api(api_bp)
 api.add_resource(Spam, '/spam')

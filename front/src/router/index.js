@@ -9,6 +9,7 @@ const routerOptions = [
   { path: '/DBtest', component: 'DbTest'},
   { path: '*', component: 'NotFound' },
   { path: '/mix', component: 'mixResult' },
+  { path: '/group', component: 'selectGroup'},
 ]
 
 const routes = routerOptions.map(route => {
