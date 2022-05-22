@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     testAPI () {
-      const path = baseUrl + '/api/random'
+      const path = baseUrl + 'api/random'
       axios.get(path)
         .then( response => (this.res = response) )
         .catch(error => {

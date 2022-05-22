@@ -1,25 +1,78 @@
 from datetime import datetime
+import random
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class SpamModel(db.Model):
-    __tablename__ = 'spam_table'
+class GroupList(db.Model):
+    __tablename__ = 'groupList'
 
-    pk = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text)
-    note = db.Column(db.Text)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
+    groupName = db.Column(db.Text)
+    groupId = db.Column(db.Integer, primary_key = True)
+    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    postCount = db.Column(db.Integer, default = 0)
+
+class GroupMember(db.Model):
+    __tablename__ = 'groupMember'
+
+    userId = db.Column(db.Integer)
+    groupId = db.Column(db.Integer)
+    addedAt = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    refId = db.Column(db.Integer, primary_key = True)
+
+class UserList(db.Model):
+    __tablename__ = 'userList'
+
+    userId = db.Column(db.Integer, primary_key = True)
+    userName = db.Column(db.Text)
+    passWord = db.Column(db.Text)
+    addedAt = db.Column(db.DateTime, nullable=False, default=datetime.now)
+
+class PostList(db.Model):
+    __tablename__ = 'postList'
+
+    userId = db.Column(db.Integer)
+    contents = db.Column(db.Text)
+    groupId = db.Column(db.Text)
+    postedAt = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    refId = db.Column(db.Integer, primary_key = True)
+
 
 def init_db(app):
     db.init_app(app)
     db.create_all()
 
 def get_all():
-    return SpamModel.query.order_by(SpamModel.pk).all()
+    return GroupList.query.order_by(GroupList.groupId).all()
 
-def insert(name, note):
-    model = SpamModel(name=name, note=note)
+def addPost(request):
+    model = PostList(userId = 1, contents = request["text"], groupId = 1)
+    db.session.add(model)
+    db.session.commit()
+
+def getAllPost():
+    return db.session.query(PostList).all()
+
+def getMixData():
+    data = db.session.query(PostList).all()
+    return random.sample(data, 2)
+
+def insert():
+    model = GroupList(groupName = "testGroup")
+    db.session.add(model)
+    db.session.commit()
+
+    model = UserList(userName = "TestUser1", passWord = "pass")
+    db.session.add(model)
+    db.session.commit()
+
+    model = GroupMember(userId = 1, groupId = 1)
+    db.session.add(model)
+    db.session.commit()
+
+    model = PostList(userId = 1, contents = "ゲーム", groupId = 1)
+    db.session.add(model)
+    db.session.commit()
+    model = PostList(userId = 1, contents = "宇宙", groupId = 1)
     db.session.add(model)
     db.session.commit()
