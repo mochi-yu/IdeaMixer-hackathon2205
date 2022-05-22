@@ -85,6 +85,7 @@ export default {
       success: false,
       absolute: true,
       overlay: false,
+      groupId: 1,
     }
   },
   mounted () {
@@ -93,13 +94,14 @@ export default {
   methods: {
     addPost: async function () {
       this.overlay = !this.overlay
-      const response = await axios.post('api/post', {text: this.inputText})
+      const randId = Math.floor(Math.random() * (3 - 1) + 1)
+      const response = await axios.post('api/post', {text: this.inputText, userId: randId})
       if(response.status == 204) this.success = true;
       this.inputText = ""
       this.getPost()
     },
     getPost: async function () {
-      const response = await axios.get('api/post')
+      const response = await axios.get('api/post?id=' + this.groupId)
       this.postList = response.data
     }
   }

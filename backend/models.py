@@ -46,16 +46,24 @@ def get_all():
     return GroupList.query.order_by(GroupList.groupId).all()
 
 def addPost(request):
-    model = PostList(userId = 1, contents = request["text"], groupId = 1)
+    model = PostList(userId = request["userId"], contents = request["text"], groupId = 1)
     db.session.add(model)
     db.session.commit()
 
-def getAllPost():
-    return db.session.query(PostList).all()
+def getAllPost(id):
+    return db.session.query(PostList).filter(GroupList.groupId == id )
 
 def getMixData():
     data = db.session.query(PostList).all()
     return random.sample(data, 2)
+
+def getAllGroup():
+    return db.session.query(GroupList).all()
+
+def addGroup(request):
+    model = GroupList(groupName = request["name"])
+    db.session.add(model)
+    db.session.commit()
 
 def insert():
     model = GroupList(groupName = "testGroup")

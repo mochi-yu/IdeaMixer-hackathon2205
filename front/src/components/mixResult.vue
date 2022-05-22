@@ -1,18 +1,33 @@
 <template>
-  <div class="mainContent">
+  <div id="mixContent">
     <h3>生成結果</h3>
     <div id="ideaA">{{ text1 }}</div>
     <div id="X">×</div>
     <div id="ideaB">{{ text2 }}</div>
 
     <v-container id="onceMore">
-      <router-link to="/mix">
-        <v-btn
-          @click="getMix"
-          dark
-          x-large
-        >もう1度ミックス！</v-btn>
-      </router-link>
+      <v-row>
+        <v-spacer></v-spacer>
+        <v-col>
+          <router-link to="/mix">
+            <v-btn
+              @click="getMix"
+              dark
+              x-large
+            >もう1度ミックス！</v-btn>
+          </router-link>
+        </v-col>
+        <v-col>
+          <router-link to="/add">
+            <v-btn
+              dark
+              x-large
+              style="background-color: green;"
+            >要素を追加する</v-btn>
+          </router-link>
+        </v-col>
+        <v-spacer></v-spacer>
+      </v-row>
     </v-container>
 
   </div>
@@ -46,7 +61,7 @@ export default {
 </script>
 
 <style>
-.mainContent{
+#mixContent{
   margin: 30px;
   margin-left: 20%;
   margin-right: 20%;
