@@ -1,5 +1,15 @@
-version: '3'
+version: '3.9'
 services:
+  db:
+    container_name: mysql
+    build:
+      dockerfile: docker/database/Dockerfile
+      context: .
+    volumes:
+      - db_data:/var/lib/mysql
+    env_file:
+      - .env
+
   backend:
     container_name: ideaMixer-backend
     build:
@@ -12,6 +22,7 @@ services:
         source: ./
         target: /app
     command: python ./backend/main.py
+
   vue:
     build:
       dockerfile: docker/frontend/Dockerfile
@@ -25,3 +36,6 @@ services:
         target: /app
     ports:
       - "8080:8080"
+
+volumes:
+  db_data:
