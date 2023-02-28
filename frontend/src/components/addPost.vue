@@ -95,13 +95,13 @@ export default {
     addPost: async function () {
       this.overlay = !this.overlay
       const randId = Math.floor(Math.random() * (3 - 1) + 1)
-      const response = await axios.post('api/post', {text: this.inputText, userId: randId})
+      const response = await axios.post('api/post', {text: this.inputText, userId: randId}, {headers: {'Content-Type': 'application/json'}})
       if(response.status == 204) this.success = true;
       this.inputText = ""
       this.getPost()
     },
     getPost: async function () {
-      const response = await axios.get('api/post?id=' + this.groupId)
+      const response = await axios.get('api/post?id=' + this.groupId, {headers: {'Content-Type': 'application/json'}, data: {}})
       this.postList = response.data
     }
   }

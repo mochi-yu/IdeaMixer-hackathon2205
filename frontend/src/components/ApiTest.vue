@@ -9,7 +9,7 @@
 <script>
 import axios from 'axios'
 
-let baseUrl = "https://idea-mixer-hackathon2205.herokuapp.com/"
+// let baseUrl = "http://localhost:5000/"
 
 export default {
   data () {
@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     testAPI () {
-      const path = baseUrl + 'api/random'
+      const path = 'api/random'
       axios.get(path)
         .then( response => (this.res = response) )
         .catch(error => {
