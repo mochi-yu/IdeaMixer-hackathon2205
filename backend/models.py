@@ -7,7 +7,7 @@ db = SQLAlchemy()
 class GroupList(db.Model):
     __tablename__ = 'groupList'
 
-    groupName = db.Column(db.Text)
+    groupName = db.Column(db.String(50))
     groupId = db.Column(db.Integer, primary_key = True)
     createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now)
     postCount = db.Column(db.Integer, default = 0)
@@ -24,16 +24,16 @@ class UserList(db.Model):
     __tablename__ = 'userList'
 
     userId = db.Column(db.Integer, primary_key = True)
-    userName = db.Column(db.Text)
-    passWord = db.Column(db.Text)
+    userName = db.Column(db.String(50))
+    passWord = db.Column(db.String(50))
     addedAt = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
 class PostList(db.Model):
     __tablename__ = 'postList'
 
     userId = db.Column(db.Integer)
-    contents = db.Column(db.Text)
-    groupId = db.Column(db.Text)
+    contents = db.Column(db.String(50))
+    groupId = db.Column(db.Integer)
     postedAt = db.Column(db.DateTime, nullable=False, default=datetime.now)
     refId = db.Column(db.Integer, primary_key = True)
 
@@ -51,7 +51,7 @@ def addPost(request):
     db.session.commit()
 
 def getAllPost(id):
-    return db.session.query(PostList).filter(GroupList.groupId == id )
+    return db.session.query(PostList).filter(PostList.groupId == id ).all()
 
 def getMixData():
     data = db.session.query(PostList).all()
