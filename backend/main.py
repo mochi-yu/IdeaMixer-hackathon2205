@@ -1,13 +1,17 @@
 from flask import Flask, render_template
 from api import api_bp
 from models import get_all, init_db, insert
+import config
 import os
 
+user = config.MYSQL_USER
+password = config.MYSQL_PASSWORD
+host = config.MYSQL_HOST
+db_name = config.MYSQL_DATABASE
 
 app = Flask(__name__, static_folder='../dist/static', template_folder='../dist')
-baseUrl = os.environ.get('DATABASE_URL')
-baseUrl = baseUrl[:8] + 'ql' + baseUrl[8:]
-app.config['SQLALCHEMY_DATABASE_URI'] = baseUrl or 'sqlite:///myspa.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{user}:{password}@{host}/{db_name}?charset=utf8'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.register_blueprint(api_bp)
 
 @app.route('/', defaults={'path': ''})

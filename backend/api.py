@@ -23,7 +23,7 @@ class Rand(Resource):
 class PostData(Resource):
   def get(self):
     groupId = request.args.get('id')
-    return [{'user': data.userId, 'group': data.groupId, 'content': data.contents, 'postedAt': str(data.postedAt)} for data in getAllPost(groupId)]
+    return [{'user': data.userId, 'group': data.groupId.decode(), 'content': data.contents.decode(), 'postedAt': str(data.postedAt)} for data in getAllPost(groupId)]
 
   def post(self):
     addPost(request.json)
@@ -31,7 +31,7 @@ class PostData(Resource):
 
 class Mix(Resource):
   def get(self):
-    return [{'text': data.contents} for data in getMixData()]
+    return [{'text': data.contents.decode()} for data in getMixData()]
 
 class Group(Resource):
   def get(self):
